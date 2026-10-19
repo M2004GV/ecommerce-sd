@@ -1,0 +1,62 @@
+Enum status_pedido {
+  criado
+  confirmado
+  enviado
+  entregue
+  cancelado
+}
+
+
+Table cliente {
+  id bigint [pk, increment]
+  nome varchar(150) [not null]
+  email varchar(254) [not null, unique]
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
+}
+
+
+Table produto {
+  id bigint [pk, increment]
+  nome varchar(150) [not null]
+  descricao text
+  preco decimal(10,2) [not null, note: 'preço atual de venda']
+  ativo boolean [not null, default: true]
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
+}
+
+// serviço de pedidos
+Table pedido {
+  id bigint [pk, increment]
+  cliente_id bigint [not null, note: 'no módulo 2 vira referência lógica, sem FK']
+  status status_pedido [not null, default: 'criado']
+  endereco_entrega text [not null]
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
+}
+
+Table item_pedido {
+  id bigint [pk, increment]
+  pedido_id bigint [not null]
+  produto_id bigint [not null, note: 'no módulo 2 vira referência lógica, sem FK']
+  quantidade int [not null, note: 'CHECK > 0']
+  preco_unitario decimal(10,2) [not null, note: 'cópia do preço no momento da compra']
+
+  indexes {
+    (pedido_id, produto_id) [unique]
+  }
+}
+
+Table historico_status {
+  id bigint [pk, increment]
+  pedido_id bigint [not null]
+  status_anterior status_pedido
+  status_novo status_pedido [not null]
+  alterado_em timestamp [not null]
+}
+
+Ref: pedido.cliente_id > cliente.id
+Ref: item_pedido.pedido_id > pedido.id [delete: cascade]
+Ref: item_pedido.produto_id > produto.id
+Ref: historico_status.pedido_id > pedido.id [delete: cascade]
