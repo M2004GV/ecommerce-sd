@@ -7,7 +7,7 @@ Repositório do projeto da disciplina de Sistemas Distribuídos - 3ª Unidade.
 **Acesso à API Pública:** [https://ecommerce-sd.onrender.com/api/orders/](https://ecommerce-sd.onrender.com/api/orders/)
 
 ### Links dos Vídeos de Demonstração
-- **Demonstrações (Pasta do Drive):** [Acessar os vídeos do Mateus e do Diego](https://drive.google.com/drive/folders/1lScf9nFotYTD9e5TKSHH85W4c8RrAlvt?usp=sharing)
+- **Demonstrações (Pasta do Drive):** [Acessar os vídeos](https://drive.google.com/drive/folders/1lScf9nFotYTD9e5TKSHH85W4c8RrAlvt?usp=sharing)
 
 ### Justificativa Técnica (Arquitetura)
 Para a primeira etapa do projeto, adotamos a seguinte arquitetura em nuvem:
