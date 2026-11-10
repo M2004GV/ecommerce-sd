@@ -1,0 +1,21 @@
+name: Deploy no Render
+
+on:
+  push:
+    branches:
+      - main
+      - modulo2
+
+jobs:
+  deploy:
+    name: Dispara deploy hooks do Render
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy servico-clientes
+        run: curl -fsS -X POST "${{ secrets.RENDER_HOOK_CLIENTES }}"
+
+      - name: Deploy servico-pedidos
+        run: curl -fsS -X POST "${{ secrets.RENDER_HOOK_PEDIDOS }}"
+
+      - name: Deploy servico-produtos
+        run: curl -fsS -X POST "${{ secrets.RENDER_HOOK_PRODUTOS }}"
