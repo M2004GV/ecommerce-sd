@@ -19,3 +19,26 @@ Para a primeira etapa do projeto, adotamos a seguinte arquitetura em nuvem:
    ```bash
    git clone https://github.com/M2004GV/ecommerce-sd.git
    cd ecommerce-sd
+   ## Módulo 2: Arquitetura de Microsserviços e Comunicação Síncrona
+
+### Diagrama da Arquitetura
+Refatoramos o projeto para a arquitetura de microsserviços utilizando a estratégia de *monorepo* (uma pasta para cada serviço).
+![Diagrama da Arquitetura do Módulo 2](arquitetura.svg)
+
+### Links dos Serviços Públicos (Render)
+- **Serviço de Pedidos (Django):** [https://ecommerce-sd.onrender.com/api/orders/](https://ecommerce-sd.onrender.com/api/orders/)
+- **Serviço de Clientes (FastAPI):** [https://servico-clientes.onrender.com]
+- **Serviço de Produtos (FastAPI):** [https://servico-produtos.onrender.com]
+
+### Como testar a comunicação entre os serviços
+A comunicação entre os microsserviços ocorre de forma síncrona via requisições HTTP REST. Quando um pedido é feito, o Serviço de Pedidos consulta o Serviço de Clientes na nuvem.
+
+**1. Testando o Caminho de Sucesso:**
+1. Acesse o link do Serviço de Pedidos acima.
+2. Desça até a seção de POST, clique na aba **"Raw data"** e envie o JSON abaixo (utilizando o `cliente_id: 1` que existe no nosso serviço):
+   ```json
+   {
+       "customer_name": "Teste de Sucesso",
+       "status": "PENDING",
+       "cliente_id": 1
+   }
