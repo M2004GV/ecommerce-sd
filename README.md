@@ -23,7 +23,7 @@ Para a primeira etapa do projeto, adotamos a seguinte arquitetura em nuvem:
 
 ### Diagrama da Arquitetura
 Refatoramos o projeto para a arquitetura de microsserviços utilizando a estratégia de *monorepo* (uma pasta para cada serviço).
-![Diagrama da Arquitetura do Módulo 2](arquitetura.svg)
+![Diagrama da Arquitetura do Módulo 2](arquitetura.png)
 
 ### Links dos Serviços Públicos (Render)
 - **Serviço de Pedidos (Django):** [https://ecommerce-sd.onrender.com/api/orders/](https://ecommerce-sd.onrender.com/api/orders/)
