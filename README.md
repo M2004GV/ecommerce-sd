@@ -19,7 +19,8 @@ Para a primeira etapa do projeto, adotamos a seguinte arquitetura em nuvem:
    ```bash
    git clone https://github.com/M2004GV/ecommerce-sd.git
    cd ecommerce-sd
-   ## Módulo 2: Arquitetura de Microsserviços e Comunicação Síncrona
+   
+## Módulo 2: Arquitetura de Microsserviços e Comunicação Síncrona
 
 ### Diagrama da Arquitetura
 Refatoramos o projeto para a arquitetura de microsserviços utilizando a estratégia de *monorepo* (uma pasta para cada serviço).
