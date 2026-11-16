@@ -1,0 +1,70 @@
+name: ecommerce-sd
+
+x-app: &app
+  restart: unless-stopped
+  mem_limit: 256m
+  cap_drop: [ALL]
+  security_opt: ["no-new-privileges:true"]
+
+services:
+  db:
+    image: postgres:18-alpine
+    restart: unless-stopped
+    mem_limit: 256m
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - pgdata:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  servico-clientes:
+    <<: *app
+    build: ./servico-clientes
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request as u; u.urlopen('http://localhost:8000/clientes/1')"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+
+  servico-produtos:
+    <<: *app
+    build: ./servico-produtos
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request as u; u.urlopen('http://localhost:8000/produtos/1')"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+
+  servico-pedidos:
+    <<: *app
+    build: ./servico-pedidos
+    command: sh -c "python manage.py migrate --noinput && exec gunicorn config.wsgi -b 0.0.0.0:8000 -w 2"
+    environment:
+      SECRET_KEY: ${SECRET_KEY}
+      ALLOWED_HOSTS: ${ALLOWED_HOSTS:-localhost}
+      POSTGRES_HOST: db
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      CLIENTES_URL: http://servico-clientes:8000
+    depends_on:
+      db:
+        condition: service_healthy
+      servico-clientes:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:8000:8000"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request as u; u.urlopen('http://localhost:8000/api/orders/')"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+
+volumes:
+  pgdata:
