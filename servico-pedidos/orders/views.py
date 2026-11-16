@@ -1,9 +1,13 @@
+import os
+
 import requests
 from rest_framework import status, viewsets
 from rest_framework.response import Response
 
 from .models import Order
 from .serializers import OrderSerializer
+
+CLIENTES_URL = os.environ.get("CLIENTES_URL", "https://servico-clientes.onrender.com")
 
 
 class OrderViewSet(viewsets.ModelViewSet):
@@ -14,8 +18,7 @@ class OrderViewSet(viewsets.ModelViewSet):
         # Validação via chamada HTTP síncrona aos outros microsserviços
         cliente_id = request.data.get("cliente_id", 1)
 
-        # Substitua a URL local pela URL pública do Render após o deploy dos novos serviços
-        cliente_url = f"https://servico-clientes.onrender.com/clientes/{cliente_id}"
+        cliente_url = f"{CLIENTES_URL}/clientes/{cliente_id}"
 
         try:
             # Tratamento básico de erro com timeout exigido pelo projeto
